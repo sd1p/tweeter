@@ -5,6 +5,7 @@ import useUser from '@/hooks/useUser';
 import { ClipLoader } from 'react-spinners';
 import UserHero from '@/components/users/UserHero';
 import UserBio from '@/components/users/UserBio';
+import PostFeed from '@/components/posts/PostFeed';
 
 const UserView = () => {
   const params = useParams();
@@ -25,6 +26,7 @@ const UserView = () => {
       <Header label={user?.name} showBackArrow />
       <UserHero userId={userId as string}/>
       <UserBio userId={userId as string}/>
+      <PostFeed userId={userId as string}/>
     </>
   );
 };

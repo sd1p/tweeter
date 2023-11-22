@@ -1,11 +1,14 @@
+import Form from '@/components/Form'
 import Header from '@/components/Header'
-import { tree } from 'next/dist/build/templates/app-page'
-import Image from 'next/image'
+import PostFeed from '@/components/posts/PostFeed'
 
 export default function Home() {
   return (
     <>
       <Header label='Home' />
+      <Form placeholder="What's happening?"/>
+      {/* dont need userId for PostFeed for Home page */}
+      <PostFeed/>
     </>
   )
 }

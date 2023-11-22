@@ -12,7 +12,7 @@ import { signOut } from 'next-auth/react'
 
 const Sidebar = () => {
 
-    const {data: currentUser}=useCurrentUser();
+    const {data: auth}=useCurrentUser();
     
     const items= [
         {
@@ -28,7 +28,7 @@ const Sidebar = () => {
         },
         {
             label:'Profile',
-            href:'/user/123',
+            href:`/users/${auth?.currentUser?.id}`,
             icon:FaUser,
             auth:true
 
@@ -49,7 +49,7 @@ const Sidebar = () => {
                     auth={item.auth}
                     />
                 ))}
-                {currentUser&& (
+                {auth&& (
                     <SidebarItem label="Logout" icon={BiLogOut} onClick={()=>signOut()}/>
                 )}
                 <SidebarTweetButton/>
