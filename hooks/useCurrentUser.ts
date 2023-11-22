@@ -5,8 +5,8 @@ import fetcher from '@/libs/fetcher';
 // swr is next implementation of redux
 
 const useCurrentUser = () =>{
-    const {data, error, isLoading, mutate} =useSWR('/api/auth/current',fetcher);
-
+    let {data, error, isLoading, mutate} =useSWR('/api/auth/current',fetcher);
+        data=data?.currentUser;
     return {
         data,
         error,

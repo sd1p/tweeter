@@ -10,7 +10,7 @@ import Input from "../Input";
 import ImageUpload from "../ImageUpload";
 const EditModal = () => {''
 
-  const {data:user,mutate:mutateCurrent}=useCurrentUser();
+  const {data:currentUser,mutate:mutateCurrent}=useCurrentUser();
   
 
   const editModal= useEditModal();
@@ -23,14 +23,14 @@ const EditModal = () => {''
 
   useEffect(() => {
     
-    setProfileImage(user?.currentUser?.profileImage);
-    setCoverImage(user?.currentUser?.coverImage);
-    setName(user?.currentUser?.name);
-    setUsername(user?.currentUser?.username);
-    setBio(user?.currentUser?.bio);
+    setProfileImage(currentUser?.profileImage);
+    setCoverImage(currentUser?.coverImage);
+    setName(currentUser?.name);
+    setUsername(currentUser?.username);
+    setBio(currentUser?.bio);
   
 
-  }, [user])
+  }, [currentUser])
   
   const [isLoading,setisLoading]= useState(false);
 

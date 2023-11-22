@@ -23,8 +23,7 @@ const Form: React.FC<FormProps> = ({
     const registerModal=useRegisterModal();
     const loginModal=useLoginModal();
 
-    const {data:auth}= useCurrentUser();
-    const currentUser=auth?.currentUser;
+    const {data:currentUser}= useCurrentUser();
     const {mutate:mutatePosts}=usePosts();
 
     const [body,setBody]=useState('');

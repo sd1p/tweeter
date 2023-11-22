@@ -6,6 +6,7 @@ import { useMemo } from "react"
 import Button from "../Button"
 import { BiCalendar } from "react-icons/bi"
 import useEditModal from "@/hooks/useEditModel"
+import useFollow from "@/hooks/useFollow"
 
 interface UserBioProps{
     userId:string
@@ -13,8 +14,10 @@ interface UserBioProps{
 
 const UserBio:React.FC<UserBioProps> = ({userId}) => {
     const {data:user}=useUser(userId)
-    const {data:auth}=useCurrentUser()
+    const {data:currentUser}=useCurrentUser()
     const editModal= useEditModal()    
+
+    const {isFollowing,toggleFollow}=useFollow(userId);
 
     const createdAt =useMemo(()=>{
         if(!user?.createdAt){
@@ -26,24 +29,24 @@ const UserBio:React.FC<UserBioProps> = ({userId}) => {
   return (
     <div className="border-b-[1px] border-neutral-800 pb-4">
         <div className="flex justify-end p-2">
-            {auth?.currentUser.id==userId?(
+            {currentUser?.id==userId?(
                 <Button secondary label='Edit' onClick={()=>{editModal.onOpen()}}/>
             ):(
-                <Button secondary label='Follow' onClick={()=>{}}/>
+                <Button secondary={!isFollowing} outlined={isFollowing} label={`${isFollowing?"Unfollow":"Follow"}`} onClick={()=>{toggleFollow()}}/>
             )}
         </div>
         <div className="mt-8 px-4">
             <div className="flex flex-col">
                 <p className="text-white text-2xl font-semibold">
-                    {auth?.currentUser?.name}
+                    {currentUser?.name}
                 </p>
                 <p className="text-md text-neutral-500">
-                    @{auth?.currentUser?.username}
+                    @{currentUser?.username}
                 </p>
             </div>
             <div className="flex flex-col mt-4">
                 <p className="text-white">
-                    {auth?.currentUser?.bio}
+                    {currentUser?.bio}
                 </p>
                 <div
                     className="flex

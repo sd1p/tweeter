@@ -19,7 +19,7 @@ const PostItem: React.FC<PostItemProps> = ({
 
     const router=useRouter();
     const loginModal=useLoginModal();
-    const {data:auth}= useCurrentUser();
+    const {data:currentUser}= useCurrentUser();
 
     const goToUser = useCallback((event:any) => {
         event.stopPropgation();
