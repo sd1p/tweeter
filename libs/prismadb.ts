@@ -14,4 +14,4 @@ export default client;
 
 // this code is to prevent nextJS from making 
 // multiple Prisma Clients during development
-// simple hack for making a singleton using global variable
+// simple way for making a singleton using global variable

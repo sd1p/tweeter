@@ -24,7 +24,9 @@ const Sidebar = () => {
             label: 'Notifications',
             href: '/notifications',
             icon: BsBellFill,
-            auth:true
+            auth:true,
+            alert:currentUser?.hasNotification as boolean
+
         },
         {
             label:'Profile',
@@ -47,6 +49,7 @@ const Sidebar = () => {
                     label={item.label}
                     icon={item.icon}
                     auth={item.auth}
+                    alert={item?.alert}
                     />
                 ))}
                 {currentUser&& (

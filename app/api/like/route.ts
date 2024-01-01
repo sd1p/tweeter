@@ -7,43 +7,50 @@ export async function POST(req:Request){
 
     try {
         const {currentUser}=await serverAuth(req);
-        const {userId}=await req.json()
-        
-        const user= await prisma.user.findUnique({
+        const {postId}=await req.json()
+
+        if(!postId || typeof postId!=='string'){
+            throw new Error('Invalid ID Cant Like')
+        }
+        const post= await prisma.post.findUnique({
             where:{
-                id:userId
+                id:postId
             }
         })
 
-        if(!user){
-            throw new Error('Invalid ID Cant Follow')
+        if(!post){
+            throw new Error('Invalid ID Cant Like')
         }
 
-        const updatedUser= await prisma.user.update({
+        const updatedLikedIds= await prisma.post.update({
             where:{
-                id:currentUser.id
+                id:postId
             },
             data:{
-                followingIds:{
-                    push:userId
+                likedIds:{
+                    push:currentUser.id
                 }
             }
         })
 
         try {
- 
+            const post = await prisma.post.findUnique({
+              where: {
+                id: postId,
+              }
+            });
         
-            if (userId) {
+            if (post?.userId) {
               await prisma.notification.create({
                 data: {
                   body: 'Someone liked your tweet!',
-                  userId: userId
+                  userId: post.userId
                 }
               });
         
               await prisma.user.update({
                 where: {
-                  id:userId
+                  id: post.userId
                 },
                 data: {
                   hasNotification: true
@@ -53,8 +60,8 @@ export async function POST(req:Request){
           } catch(error) {
             console.log(error);
           }
-        const {profileImage,coverImage,...userDetails}=updatedUser
-        return NextResponse.json(userDetails,{status:200})
+          
+        return NextResponse.json(updatedLikedIds,{status:200})
 
     } catch (error:any) {
         console.log(error);
@@ -67,45 +74,35 @@ export async function DELETE(req:Request){
 
     try {
         const {currentUser}=await serverAuth(req);
-        const {userId}=await req.json()
+        const {postId}=await req.json()
 
-        const user= await prisma.user.findUnique({
+        const post= await prisma.post.findUnique({
             where:{
-                id:userId
+                id:postId
             }
         })
 
-        if(!user){
-            throw new Error("Invalid ID Can't Unfollow ")
+        if(!post){
+            throw new Error("Invalid ID Can't Unlike ")
         }
 
-
-        const currUserDetails= await prisma.user.findUnique({
-            where:{
-                id:currentUser.id
-            },
-        })
+        let updatedLikedList=[...(post.likedIds||[])]
+        updatedLikedList=updatedLikedList.filter(id=>id!==currentUser.id)
         
-        let updatedFollowingList=currUserDetails?.followingIds
-        
-        const updatedUser= await prisma.user.update({
+        const updatedUnlikePost= await prisma.post.update({
             where:{
-                id:currentUser.id
+                id:postId
             },
             data:{
-                followingIds:{
-                    set:updatedFollowingList?.filter(followingId=>followingId!==userId)
-                }
+                likedIds:updatedLikedList
             }
         })
 
-        const {profileImage,coverImage,...userDetails}=updatedUser
         
-        return NextResponse.json(userDetails,{status:200})
+        return NextResponse.json(updatedUnlikePost,{status:200})
 
     } catch (error:any) {
         console.log(error);
         return NextResponse.json({"message":error?.message},{status:400})
     }
-
 }
