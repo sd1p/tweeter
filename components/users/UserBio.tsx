@@ -38,15 +38,15 @@ const UserBio:React.FC<UserBioProps> = ({userId}) => {
         <div className="mt-8 px-4">
             <div className="flex flex-col">
                 <p className="text-white text-2xl font-semibold">
-                    {currentUser?.name}
+                    {user?.name}
                 </p>
                 <p className="text-md text-neutral-500">
-                    @{currentUser?.username}
+                    @{user?.username}
                 </p>
             </div>
             <div className="flex flex-col mt-4">
                 <p className="text-white">
-                    {currentUser?.bio}
+                    {user?.bio}
                 </p>
                 <div
                     className="flex

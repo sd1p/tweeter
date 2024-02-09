@@ -12,12 +12,7 @@ interface reqBody{
 export async function POST(req:Request){
     try {
         
-        const {email,username,name,password}= (await req.json()) as {
-            name: string;
-            username:string,
-            email: string;
-            password: string;
-          };
+        const {email,username,name,password}= (await req.json()) as reqBody
         const hashedPassword= await bcrypt.hash(password,12)
         const user =await prisma?.user.create({
             data:{
